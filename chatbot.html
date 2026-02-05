@@ -12,11 +12,30 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function ChatInput() {
+      function ChatInput({ chatMessages, setChatMessages }) {
+        const [inputText, setInputText] = React.useState("");
+
+        function saveInputText(event) {
+          setInputText(event.target.value);
+        }
+
+        function sendMessage() {
+          setChatMessages([
+            ...chatMessages,
+            { message: inputText, sender: "user" },
+          ]);
+          setInputText("");
+        }
+
         return (
           <>
-            <input placeholder="Send a message to the chatbot" size="30" />
-            <button>Send</button>
+            <input
+              placeholder="Send a message to the chatbot"
+              size="30"
+              onChange={saveInputText}
+              value={inputText}
+            />
+            <button onClick={sendMessage}>Send</button>
           </>
         );
       }
@@ -35,24 +54,9 @@
         );
       }
 
-      function ChatMessages() {
-        const [chatMessages, setChatMessages] = React.useState([
-          { message: "hello chatbot", sender: "user" },
-          { message: "hello, how can i help you?", sender: "bot" },
-          { message: "can you get todays date?", sender: "user" },
-          { message: "yes, today is 3rd of February!?", sender: "bot" },
-        ]);
-
-        function sendMessage() {
-          setChatMessages([
-            ...chatMessages,
-            { message: "test message", sender: "user" },
-          ]);
-        }
-
+      function ChatMessages({ chatMessages }) {
         return (
           <>
-            <button onClick={sendMessage}> Send Message</button>
             {chatMessages.map((element, index) => {
               return (
                 <ChatMessage
@@ -67,10 +71,19 @@
       }
 
       function App() {
+        const [chatMessages, setChatMessages] = React.useState([
+          { message: "hello chatbot", sender: "user" },
+          { message: "hello, how can i help you?", sender: "bot" },
+          { message: "can you get todays date?", sender: "user" },
+          { message: "yes, today is 3rd of February!?", sender: "bot" },
+        ]);
         return (
           <>
-            <ChatInput />
-            <ChatMessages />
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages chatMessages={chatMessages} />
           </>
         );
       }
