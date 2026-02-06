@@ -9,6 +9,7 @@
 
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
@@ -20,10 +21,19 @@
         }
 
         function sendMessage() {
-          setChatMessages([
+          const newChatMessages = [
             ...chatMessages,
             { message: inputText, sender: "user" },
+          ];
+
+          setChatMessages(newChatMessages);
+          const response = Chatbot.getResponse(inputText);
+
+          setChatMessages([
+            ...newChatMessages,
+            { message: response, sender: "bot" },
           ]);
+
           setInputText("");
         }
 
