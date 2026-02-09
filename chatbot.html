@@ -13,8 +13,27 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
+      function Counter() {
+        const [clicks, setClicks] = React.useState(0);
+
+        function increaseClicks() {
+          setClicks(clicks + 1);
+        }
+        return (
+          <>
+            <button onClick={increaseClicks}>Clicked {clicks}</button>
+          </>
+        );
+      }
+
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
+
+        function keyLog(e) {
+          if (e.key == "Enter") {
+            sendMessage();
+          }
+        }
 
         function saveInputText(event) {
           setInputText(event.target.value);
@@ -43,9 +62,11 @@
               placeholder="Send a message to the chatbot"
               size="30"
               onChange={saveInputText}
+              onKeyDown={keyLog}
               value={inputText}
             />
             <button onClick={sendMessage}>Send</button>
+            <p>{inputText}</p>
           </>
         );
       }
@@ -89,6 +110,7 @@
         ]);
         return (
           <>
+            <Counter />
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
