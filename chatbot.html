@@ -101,6 +101,11 @@
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
 
+        const [showPassword, setShowPassword] = React.useState(false);
+        function toggleShowPassword() {
+          setShowPassword(!showPassword);
+        }
+
         function keyLog(e) {
           if (e.key == "Enter") {
             sendMessage();
@@ -133,6 +138,7 @@
             <input
               placeholder="Send a message to the chatbot"
               size="30"
+              type={showPassword ? "text" : "password"}
               onChange={saveInputText}
               onKeyDown={keyLog}
               value={inputText}
@@ -140,6 +146,9 @@
             />
             <button onClick={sendMessage} className="send-button">
               Send
+            </button>
+            <button className="send-button" onClick={toggleShowPassword}>
+              show password
             </button>
           </div>
         );
